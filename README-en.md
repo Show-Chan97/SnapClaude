@@ -108,6 +108,10 @@ No manual config needed — when a download fails, mirrors kick in automatically
 - npm → `registry.npmmirror.com`
 - pip → Tsinghua / Aliyun mirrors
 
+## 🤝 Acknowledgments
+
+During the development of this project, some of the cross-platform concepts and core script structures were inspired by the open-source project [raystyle/oymywinclaude](https://github.com/raystyle/oymywinclaude). We would like to express our gratitude to its author!
+
 ## License
 
 MIT

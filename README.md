@@ -112,6 +112,10 @@ SnapClaude/
 - NPM 仓库 → `registry.npmmirror.com` (淘宝源) 无缝加速。
 - PIP 仓库 → 优先切换清华 / 阿里云镜像服务。
 
+## 🤝 致谢 (Acknowledgments)
+
+本项目在开发过程中，部分跨平台理念与核心脚本的构建灵感参考了 [raystyle/oymywinclaude](https://github.com/raystyle/oymywinclaude) 开源项目。特此对其开发者的工作表示感谢！
+
 ## 📜 许可协议 (License)
 
 本项目采用 **[MIT License](LICENSE)** 开源协议。
