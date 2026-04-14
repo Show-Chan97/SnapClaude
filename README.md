@@ -1,111 +1,122 @@
-# SnapClaude
+# ⚡ Snapdragon Claude (SnapClaude)
 
-跨平台开发环境一键配置工具。自动识别 macOS / Windows / Linux，一条命令完成安装。
+![Platform](https://img.shields.io/badge/platform-macOS_|_Windows_|_Linux-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-Active-success.svg)
 
-## 特性
+跨平台开发环境一键配置工具。自动识别 macOS / Windows / Linux，一条命令完成所有的开发环境和 Claude Code CLI 安装。
 
-- **跨平台**：自动检测系统，仅下载对应平台脚本
-- **幂等安装**：重复运行不会重复安装
-- **国内加速**：直连失败自动切换镜像
-- **按需拉取**：使用 Git Sparse Checkout，只下载目标平台的文件
+## ✨ 特性
 
-## 依赖
+- **跨平台兼容**：自动检测系统，自动挂载并执行对应平台脚本。
+- **幂等性安装**：安全！重复运行绝不会重复安装，可作为更新检测工具使用。
+- **智能国内加速**：中国大陆直连失败时，自动切换高速代理和镜像（包含 gh-proxy, npmmirror, tuna pip 源）。
+- **按需极致拉取**：运用 Git Sparse Checkout 机制，仅拉取您当前平台的文件段落。
 
-- macOS / Linux: [just](https://github.com/casey/just) >= 1.20
+## 📦 依赖环境
+
+- macOS / Linux: 预装 [just](https://github.com/casey/just) >= 1.20
 - Windows: PowerShell 5.0+
-- macOS 额外推荐: [Homebrew](https://brew.sh)
+- macOS 额外推荐: 预装 [Homebrew](https://brew.sh)
 
-## 安装
+---
 
-### 方式 A：一键安装（推荐）
+## 🚀 安装指南
+
+### 方式 A：一键全自动安装（推荐）
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh)
 ```
+> *自动检测系统并拉取对应平台脚本，全程无感、极速初始化！*
 
-自动检测系统并拉取对应平台脚本，全程无感。
-
-### 方式 B：手动 clone
+### 方式 B：手动克隆仓库
 
 ```bash
 git clone https://github.com/Show-Chan97/SnapClaude
-cd snapclaude
+cd SnapClaude
 
-# 只 checkout 对应平台（节省下载）
+# 若需要节省带宽，可只提取对应平台库
 git sparse-checkout set platforms/macos install.sh README.md
 
-# 安装
+# 执行完整安装
 just install-all
 ```
 
-### 方式 C：Windows PowerShell 直接跑
+### 方式 C：Windows 原生安装方式
 
+如果您的电脑是 Windows 系统，直接打开 `PowerShell` 执行：
 ```powershell
 irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh | iex
 ```
 
-## 使用
+---
+
+## 🛠️ 使用方法与指令
+
+项目自带丰富的颗粒级安装子指令，你可以按需安装想要的环境：
 
 ```bash
 just install-all        # 安装全部（Git / Node.js / Python / VSCode / Claude Code）
-just install-claude     # 只装 Claude Code 及依赖
+just install-claude     # 只装 Claude Code (含前置依赖)
 just install-git        # 只装 Git
 just install-node       # 只装 Node.js
 just install-python     # 只装 Python
-just install-vscode     # 只装 VSCode
-just status             # 查看安装状态
+just install-vscode     # 只装 VSCode编辑器
+just status             # 查看所有工具当前的安装状态和版本
 ```
 
-## 安装内容
+## 📋 安装列表与版本要求
 
-| 工具 | 版本要求 | 说明 |
+| 工具 | 最低版本要求 | 详情说明 |
 |------|----------|------|
-| Git | >= 2.40 | 代码版本管理 |
-| Node.js | >= 18 | JavaScript 运行时 |
-| Python | >= 3.9 | Python 运行时 |
-| VSCode | 最新版 | 代码编辑器 |
-| Claude Code | 最新版 | Anthropic CLI |
+| Git | `>= 2.40` | 后续所有代码版本管理 |
+| Node.js | `>= 18` | JavaScript 运行时（npm 环境支持）|
+| Python | `>= 3.9` | Python 运行时及 Pip 管理器 |
+| VSCode | 最新稳定版 | 主力代码编辑器 |
+| Claude Code| 最新版 | Anthropic 官方 CLI |
 
-### Claude Code 自动注册
+### 🤖 Claude Code 智能自动配置
 
-- LSP 插件：`pyright`、`typescript`、`powershell`
-- Skills：`playwright`
-- MCP 服务：`http://127.0.0.1:8888/mcp`（Jupyter）
-- 跳过 onboarding
+安装不仅是下载 CLI，更包括对它的底层初始化配置：
+- 自动绑定 LSP 插件：`pyright`、`typescript`、`powershell`。
+- 自动注册 Skills：`playwright` 服务。
+- 自动打通 MCP 服务：内嵌 `http://127.0.0.1:8888/mcp`（交互式 Notebook Jupyter）。
+- 全程自动跳过人工 onboarding 步骤。
 
-## 目录结构
+---
 
-```
-snapclaude/
-├── install.sh              # Bootstrap（自动判断系统 + sparse checkout）
-├── README.md
-├── justfile                 # 根 justfile（中转）
-├── core/                    # 各平台通用
-│   ├── detect.sh            # 系统检测
-│   ├── common.sh            # 公共函数
-│   ├── download.sh          # 智能下载（镜像回退）
-│   ├── status.sh            # 状态查看（bash）
-│   └── status.ps1           # 状态查看（PowerShell）
-└── platforms/
-    ├── macos/               # macOS 专用
-    │   ├── justfile
-    │   └── src/             # 安装脚本
-    ├── windows/              # Windows 专用
-    │   ├── justfile
-    │   ├── install.ps1       # PowerShell 入口
-    │   └── src/
-    └── linux/               # Linux 专用
-        ├── justfile
-        └── src/
+## 📂 核心目录结构
+
+```text
+SnapClaude/
+├── install.sh              # 核心 Bootstrap（通过此入口自动判断系统 + 下载）
+├── README.md               # 项目首页
+├── LICENSE                 # 开源协议文件
+├── justfile                # 根运行配置
+├── core/                   # 平台通用模块
+│   ├── detect.sh           # OS 及 CPU 架构嗅探
+│   ├── download.sh         # 支持网络镜像回退的高智能下载器
+│   └── status.sh / .ps1    # 环境诊断探针
+└── platforms/              # 各独立平台包
+    ├── macos/              # macOS (基于 Homebrew)
+    ├── windows/            # Windows (基于 PowerShell Script)
+    └── linux/              # Linux Debian/RedHat (apt/yum/dnf 系列)
 ```
 
-## 国内网络
+## 🌍 国内网络深度优化
 
-无需手动配置，下载失败时自动切换：
-- GitHub Releases → `gh-proxy.com` / `ghproxy.com`
-- npm → `registry.npmmirror.com`
-- pip → 清华 / 阿里云镜像
+内置了深度网络优化策略。您完全无需手动操作。
+在触发主库超时或失败时系统会自动挂钩备用代理：
+- GitHub Releases → 动用 `gh-proxy.com` 或备胎分发节点。
+- NPM 仓库 → `registry.npmmirror.com` (淘宝源) 无缝加速。
+- PIP 仓库 → 优先切换清华 / 阿里云镜像服务。
 
-## License
+## 📜 许可协议 (License)
 
-MIT
+本项目采用 **[MIT License](LICENSE)** 开源协议。
+
+- **您可以**：自由地用于商业或非商业项目、修改代码、分发工具。
+- **您只需要**：在分发的副本中保留版权声明（详见 `LICENSE` 文件）。
+
+SnapClaude 期待它能给您的跨栈开发环境部署带来最无感的丝滑体验。
