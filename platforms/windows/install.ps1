@@ -1,4 +1,4 @@
-﻿# SnapClaude Windows 安装脚本
+# SnapClaude Windows 安装脚本
 # Usage: .\install.ps1 [all|git|node|python|vscode|claude]
 
 param(
@@ -81,6 +81,7 @@ function Invoke-Download($url, $dest) {
             return $true
         } catch {
             Write-Warn "下载失败: $u"
+            Remove-Item $tmp -Force -ErrorAction SilentlyContinue
         }
     }
     return $false

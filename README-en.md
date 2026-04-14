@@ -11,9 +11,11 @@ One-command cross-platform development environment setup. Automatically detects 
 
 ## Requirements
 
-- macOS / Linux: [just](https://github.com/casey/just) >= 1.20
-- Windows: PowerShell 5.0+
-- macOS recommended: [Homebrew](https://brew.sh)
+- **macOS / Linux**: [just](https://github.com/casey/just) >= 1.20
+- **Windows**: PowerShell 5.0+
+- **macOS recommended**: [Homebrew](https://brew.sh)
+- **Git recommended**: `>= 2.25` for Sparse Checkout support (older versions will silently fallback to full codebase sync).
+- **WSL Users**: Script auto-detects WSL and skips VSCode installation in the subsystem. Please install VSCode on your Windows host and use the `Remote - WSL` extension.
 
 ## Install
 

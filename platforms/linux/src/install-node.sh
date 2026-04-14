@@ -15,7 +15,7 @@ fi
 
 # 使用 NodeSource
 if command -v curl &> /dev/null; then
-    local version="18"
+    version="18"
     curl -fsSL "https://deb.nodesource.com/setup_${version}.x" | sudo bash -
     sudo apt-get install -y nodejs
 else
