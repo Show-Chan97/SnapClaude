@@ -50,6 +50,9 @@ just install-all
 irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
+> **💡 温馨提示：默认安装路径**
+> 系统会自动为您在 `D:\DevEnvs` 构建纯净的独立环境目录；如果您没有 D 盘，系统会智能降级放置在您的 `C:\Users\用户名\DevEnvs` 目录下，绝不污染系统原有的 `Program Files` 目录！
+
 ---
 
 ## 🛠️ 使用方法与指令
