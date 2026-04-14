@@ -1,4 +1,4 @@
-# SnapClaude Windows 安装脚本
+﻿# SnapClaude Windows 安装脚本
 # Usage: .\install.ps1 [all|git|node|python|vscode|claude]
 
 param(
@@ -8,6 +8,10 @@ param(
 $ErrorActionPreference = "Stop"
 $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 $CoreDir = "$SCRIPT_DIR/../core"
+
+# 动态探测基础路径
+$InstallRoot = if (Test-Path "D:\") { "D:\DevEnvs" } else { "$env:USERPROFILE\DevEnvs" }
+if (-not (Test-Path $InstallRoot)) { New-Item -ItemType Directory -Path $InstallRoot -Force | Out-Null }
 
 # -------------------- 颜色 --------------------
 function Write-Step($msg) { Write-Host "[STEP] $msg" -ForegroundColor Cyan }
@@ -91,23 +95,20 @@ function Install-Git {
     }
 
     $version = "2.43.0"
-    $arch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "x64" }
-    $filename = "Git-${version}-${arch}-portable.exe"
+    $arch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "64-bit" }
+    $filename = "PortableGit-${version}-${arch}.7z.exe"
     $url = "https://github.com/git-for-windows/git/releases/download/v${version}.windows.1/${filename}"
-    $dest = "$env:TEMP\Git.exe"
+    $dest = "$env:TEMP\$filename"
 
     if (Invoke-Download $url $dest) {
-        $installDir = "D:\DevEnvs"
+        $installDir = "$InstallRoot\Git"
         if (!(Test-Path $installDir)) { New-Item -ItemType Directory -Path $installDir -Force | Out-Null }
-        Copy-Item $dest "$installDir\Git.exe" -Force
+        
+        Write-Info "正在提取 Git 到 $installDir ..."
+        Start-Process -FilePath $dest -ArgumentList "-y","-o`"$installDir`"" -WindowStyle Hidden -Wait
         
         $cmdDir = "$installDir\cmd"
-        if (!(Test-Path $cmdDir)) { New-Item -ItemType Directory -Path $cmdDir -Force | Out-Null }
-        Copy-Item "$installDir\Git.exe" "$cmdDir\git.exe" -Force
-
         $binDir = "$installDir\bin"
-        if (!(Test-Path $binDir)) { New-Item -ItemType Directory -Path $binDir -Force | Out-Null }
-        Copy-Item "$installDir\Git.exe" "$binDir\git.exe" -Force
 
         Add-ToPath $cmdDir
         Add-ToPath $binDir
@@ -130,7 +131,7 @@ function Install-Node {
     $filename = "node-v${version}-win-${arch}.zip"
     $url = "https://nodejs.org/dist/v${version}/${filename}"
     $dest = "$env:TEMP\node.zip"
-    $extractDir = "D:\DevEnvs\nodejs"
+    $extractDir = "$InstallRoot\nodejs"
 
     if (Invoke-Download $url $dest) {
         if (!(Test-Path $extractDir)) { New-Item -ItemType Directory -Path $extractDir -Force | Out-Null }
@@ -156,7 +157,7 @@ function Install-Python {
     $filename = "python-${version}-embed-${arch}.zip"
     $url = "https://www.python.org/ftp/python/${version}/${filename}"
     $dest = "$env:TEMP\python.zip"
-    $extractDir = "D:\DevEnvs\Python"
+    $extractDir = "$InstallRoot\Python"
 
     if (Invoke-Download $url $dest) {
         if (!(Test-Path $extractDir)) { New-Item -ItemType Directory -Path $extractDir -Force | Out-Null }
@@ -195,9 +196,9 @@ function Install-VSCode {
     }
 
     $arch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "x64" }
-    $url = "https://update.code.visualstudio.com/latest/win32-$arch/stable"
+    $url = "https://update.code.visualstudio.com/latest/win32-$arch-archive/stable"
     $dest = "$env:TEMP\VSCode.zip"
-    $extractDir = "D:\DevEnvs\VSCode"
+    $extractDir = "$InstallRoot\VSCode"
 
     if (Invoke-Download $url $dest) {
         if (!(Test-Path $extractDir)) { New-Item -ItemType Directory -Path $extractDir -Force | Out-Null }
@@ -228,11 +229,20 @@ function Install-Claude {
     }
 
     Write-Info "正在安装 @anthropic-ai/claude-code..."
-    cmd /c "npm install -g @anthropic-ai/claude-code"
+    & "$env:SystemRoot\System32\cmd.exe" /c "npm install -g @anthropic-ai/claude-code"
     if ($LASTEXITCODE -ne 0) {
         Write-Warn "安装失败，尝试通过国内 npm 镜像加速..."
-        cmd /c "npm install -g @anthropic-ai/claude-code --registry=https://registry.npmmirror.com"
+        & "$env:SystemRoot\System32\cmd.exe" /c "npm install -g @anthropic-ai/claude-code --registry=https://registry.npmmirror.com"
     }
+
+    # 尝试确保 global npm 目录存在于 PATH 变量
+    try {
+        $npmPrefix = & "$env:SystemRoot\System32\cmd.exe" /c "npm config get prefix" | Out-String
+        if ($npmPrefix) {
+            $npmPrefix = $npmPrefix.Trim()
+            Add-ToPath $npmPrefix
+        }
+    } catch {}
 
     if (Test-Command claude) {
         Write-Ok "Claude Code 已安装: $(Get-Version claude)"
@@ -244,6 +254,9 @@ function Install-Claude {
 
 function Register-ClaudePlugins {
     Write-Step "注册 Claude Code 插件..."
+
+    $oldErr = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
 
     $plugins = @("pyright", "typescript", "powershell")
     foreach ($p in $plugins) {
@@ -261,6 +274,8 @@ function Register-ClaudePlugins {
     Write-Info "注册 Jupyter MCP..."
     claude mcp add jupyter "http://127.0.0.1:8888/mcp" 2>$null 4>&1 | Out-Null
     if ($LASTEXITCODE -eq 0) { Write-Ok "Jupyter MCP 已注册" } else { Write-Warn "Jupyter MCP 注册失败" }
+
+    $ErrorActionPreference = $oldErr
 
     # 跳过 onboarding
     $settingsDir = "$env:USERPROFILE\.claude"
