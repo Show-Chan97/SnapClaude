@@ -41,7 +41,7 @@ just install-all
 ### Option C: Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh | iex
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
 ## Usage

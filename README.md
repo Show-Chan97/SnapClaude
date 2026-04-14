@@ -47,7 +47,7 @@ just install-all
 
 如果您的电脑是 Windows 系统，直接打开 `PowerShell` 执行：
 ```powershell
-irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh | iex
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
 ---
