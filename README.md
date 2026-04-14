@@ -20,7 +20,7 @@
 ### 方式 A：一键安装（推荐）
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/snapclaude/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh)
 ```
 
 自动检测系统并拉取对应平台脚本，全程无感。
@@ -28,7 +28,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/snapclaude/mai
 ### 方式 B：手动 clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/snapclaude
+git clone https://github.com/Show-Chan97/SnapClaude
 cd snapclaude
 
 # 只 checkout 对应平台（节省下载）
@@ -41,7 +41,7 @@ just install-all
 ### 方式 C：Windows PowerShell 直接跑
 
 ```powershell
-irm https://raw.githubusercontent.com/YOUR_USERNAME/snapclaude/main/install.sh | iex
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh | iex
 ```
 
 ## 使用

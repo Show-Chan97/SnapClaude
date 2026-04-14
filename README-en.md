@@ -20,7 +20,7 @@ One-command cross-platform development environment setup. Automatically detects 
 ### Option A: One-liner (recommended)
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/snapclaude/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh)
 ```
 
 Automatically detects your OS, pulls the right platform scripts, runs the install.
@@ -28,7 +28,7 @@ Automatically detects your OS, pulls the right platform scripts, runs the instal
 ### Option B: Manual clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/snapclaude
+git clone https://github.com/Show-Chan97/SnapClaude
 cd snapclaude
 
 # Only checkout your platform (saves bandwidth)
@@ -41,7 +41,7 @@ just install-all
 ### Option C: Windows PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/YOUR_USERNAME/snapclaude/main/install.sh | iex
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh | iex
 ```
 
 ## Usage
