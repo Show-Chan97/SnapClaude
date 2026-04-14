@@ -1,0 +1,44 @@
+# SnapClaude - Linux 平台
+# Usage: just <recipe>
+
+default:
+    @echo "SnapClaude (Linux)"
+    @just --list --justfile {{justfile()}} | grep -E "^\s+install|^\s+status"
+
+install-all: install-git install-node install-python install-vscode install-claude
+    @echo ""
+    @echo "✅ 全部安装完成！"
+
+install-git:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-git.sh
+
+install-node:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-node.sh
+
+install-python:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-python.sh
+
+install-vscode:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-vscode.sh
+
+install-claude: install-git install-node install-python
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-claude.sh
+    bash src/install-claude-plugins.sh
+
+status:
+    #!/usr/bin/env bash
+    bash ../../core/status.sh
+
+update:
+    #!/usr/bin/env bash
+    bash ../../core/update.sh

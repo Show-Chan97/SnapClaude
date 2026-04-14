@@ -1,0 +1,27 @@
+# SnapClaude - Windows 平台
+# Usage: just <recipe>
+
+default:
+    @echo "SnapClaude (Windows)"
+    @just --list --justfile {{justfile()}} | grep -E "^\s+install|^\s+status"
+
+install-all:
+    @powershell -ExecutionPolicy Bypass -File install.ps1 -Target all
+
+install-git:
+    @powershell -ExecutionPolicy Bypass -File install.ps1 -Target git
+
+install-node:
+    @powershell -ExecutionPolicy Bypass -File install.ps1 -Target node
+
+install-python:
+    @powershell -ExecutionPolicy Bypass -File install.ps1 -Target python
+
+install-vscode:
+    @powershell -ExecutionPolicy Bypass -File install.ps1 -Target vscode
+
+install-claude:
+    @powershell -ExecutionPolicy Bypass -File install.ps1 -Target claude
+
+status:
+    @powershell -ExecutionPolicy Bypass -File ..\..\core\status.ps1

@@ -1,0 +1,55 @@
+# SnapClaude - macOS 平台
+# Usage: just <recipe>
+
+# ============================================================
+# 默认配方：显示帮助
+# ============================================================
+default:
+    @echo "SnapClaude (macOS)"
+    @echo ""
+    @echo "用法: just <recipe>"
+    @just --list --justfile {{justfile()}} | grep -E "^\s+install|^\s+config|^\s+status|^\s+update"
+
+# ============================================================
+# 安装
+# ============================================================
+install-all: install-git install-node install-python install-vscode install-claude
+    @echo ""
+    @echo "✅ 全部安装完成！"
+
+install-git:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-git.sh
+
+install-node:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-node.sh
+
+install-python:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-python.sh
+
+install-vscode:
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-vscode.sh
+
+install-claude: install-git install-node install-python
+    #!/usr/bin/env bash
+    set -e
+    bash src/install-claude.sh
+    bash src/install-claude-plugins.sh
+
+# ============================================================
+# 状态
+# ============================================================
+status:
+    #!/usr/bin/env bash
+    bash src/status.sh
+
+update:
+    #!/usr/bin/env bash
+    bash src/update.sh
