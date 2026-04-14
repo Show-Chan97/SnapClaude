@@ -23,14 +23,14 @@
 
 ## 🚀 安装指南
 
-### 方式 A：一键全自动安装（推荐）
+### 方式 A：一键全自动安装（✅ 推荐 macOS / Linux 用户）
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/install.sh)
 ```
 > *自动检测系统并拉取对应平台脚本，全程无感、极速初始化！*
 
-### 方式 B：手动克隆仓库
+### 方式 B：手动克隆仓库（💻 适合跨平台进阶用户）
 
 ```bash
 git clone https://github.com/Show-Chan97/SnapClaude
@@ -43,7 +43,7 @@ git sparse-checkout set platforms/macos install.sh README.md
 just install-all
 ```
 
-### 方式 C：Windows 原生安装方式
+### 方式 C：Windows 原生安装（✅ 推荐 Windows 用户）
 
 如果您的电脑是 Windows 系统，直接打开 `PowerShell` 执行：
 ```powershell
