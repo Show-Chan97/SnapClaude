@@ -56,7 +56,7 @@ irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/wind
 
 ```powershell
 # 1. 下载脚本
-irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1 -Encoding UTF8
 
 # 2. 解锁执行策略 (仅对当前窗口有效)
 Set-ExecutionPolicy Bypass -Scope Process -Force
