@@ -54,15 +54,19 @@ irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/wind
 
 **🛠️ 调试与排错**：如果安装遇到问题，可以开启调试日志模式：
 
+1. 下载脚本：
 ```powershell
-# 1. 下载脚本
 $c = irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1
 $c | Out-File install.ps1 -Encoding UTF8
+```
 
-# 2. 解锁执行策略 (仅对当前窗口有效)
+2. 解锁执行策略（仅对当前窗口有效）：
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
+```
 
-# 3. 运行调试
+3. 运行调试：
+```powershell
 .\install.ps1 -DebugLog
 ```
 

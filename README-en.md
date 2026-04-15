@@ -48,15 +48,19 @@ irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/wind
 
 **🛠️ Troubleshooting**: If the installation fails, you can enable debug logging:
 
+1. Download script:
 ```powershell
-# 1. Download script
 $c = irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1
 $c | Out-File install.ps1 -Encoding UTF8
+```
 
-# 2. Unlock execution policy (applies to this session only)
+2. Unlock execution policy (applies to this session only):
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
+```
 
-# 3. Run with debug logging
+3. Run with debug logging:
+```powershell
 .\install.ps1 -DebugLog
 ```
 
