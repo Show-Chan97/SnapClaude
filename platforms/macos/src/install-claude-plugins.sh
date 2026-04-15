@@ -12,15 +12,6 @@ if ! is_installed claude; then
     exit 0
 fi
 
-# LSP 插件
-for plugin in pyright typescript powershell; do
-    info "注册 LSP: $plugin"
-    claude plugin install "$plugin" 2>/dev/null && ok "$plugin 已注册" || warn "$plugin 注册失败"
-done
-
-# Playwright Skills
-info "注册 Playwright Skills..."
-claude skills add playwright 2>/dev/null && ok "Playwright 已注册" || warn "Playwright 注册失败"
 
 # Jupyter MCP
 info "注册 Jupyter MCP..."

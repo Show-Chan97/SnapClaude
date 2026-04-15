@@ -1,8 +1,9 @@
-﻿# SnapClaude Windows 安装脚本
+# SnapClaude Windows 安装脚本
 # Usage: .\install.ps1 [all|git|node|python|vscode|claude]
 
 param(
-    [string]$Target = "all"
+    [string]$Target = "all",
+    [switch]$DebugLog
 )
 
 $ErrorActionPreference = "Stop"
@@ -19,6 +20,12 @@ function Write-Info($msg) { Write-Host "[INFO] $msg" -ForegroundColor Blue }
 function Write-Ok($msg)   { Write-Host "[OK]   $msg" -ForegroundColor Green }
 function Write-Warn($msg) { Write-Host "[WARN] $msg" -ForegroundColor Yellow }
 function Write-Fail($msg) { Write-Host "[FAIL] $msg" -ForegroundColor Red }
+
+if ($DebugLog) {
+    $LogPath = "$InstallRoot\install_debug.log"
+    Start-Transcript -Path $LogPath -Append
+    Write-Info "调试模式已开启，详细安装日志将自动保存至: $LogPath"
+}
 
 # -------------------- 环境变量辅助 --------------------
 function Add-ToPath($dir) {
@@ -258,26 +265,8 @@ function Register-ClaudePlugins {
     $oldErr = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
 
-    $plugins = @("pyright", "typescript", "powershell")
-    foreach ($p in $plugins) {
-        Write-Info "注册 $p..."
-        claude plugin install $p 2>$null 4>&1 | Out-Null
-        if ($LASTEXITCODE -eq 0) { Write-Ok "$p 已注册" } else { Write-Warn "$p 注册失败" }
-    }
-
-    # Playwright
-    Write-Info "注册 Playwright..."
-    claude skills add playwright 2>$null 4>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) { Write-Ok "Playwright 已注册" } else { Write-Warn "Playwright 注册失败" }
-
-    # Jupyter MCP
-    Write-Info "注册 Jupyter MCP..."
-    claude mcp add jupyter "http://127.0.0.1:8888/mcp" 2>$null 4>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) { Write-Ok "Jupyter MCP 已注册" } else { Write-Warn "Jupyter MCP 注册失败" }
-
-    $ErrorActionPreference = $oldErr
-
-    # 跳过 onboarding
+    # 优先跳过 onboarding 工作流，防止第一次运行 claude CLI 被互动提示卡死失败
+    Write-Info "初始化 Claude Code 配置..."
     $settingsDir = "$env:USERPROFILE\.claude"
     if (!(Test-Path $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
     $settingsFile = "$settingsDir\settings.json"
@@ -291,6 +280,13 @@ function Register-ClaudePlugins {
         '{"hasCompletedOnboarding": true}' | Set-Content $settingsFile
     }
     Write-Ok "Onboarding 已跳过"
+
+    # Jupyter MCP
+    Write-Info "注册 Jupyter MCP..."
+    claude mcp add jupyter "http://127.0.0.1:8888/mcp"
+    if ($LASTEXITCODE -eq 0) { Write-Ok "Jupyter MCP 已注册" } else { Write-Warn "Jupyter MCP 注册失败" }
+
+    $ErrorActionPreference = $oldErr
     Write-Ok "插件注册完成"
 }
 

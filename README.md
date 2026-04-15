@@ -82,8 +82,6 @@ just status             # 查看所有工具当前的安装状态和版本
 ### 🤖 Claude Code 智能自动配置
 
 安装不仅是下载 CLI，更包括对它的底层初始化配置：
-- 自动绑定 LSP 插件：`pyright`、`typescript`、`powershell`。
-- 自动注册 Skills：`playwright` 服务。
 - 自动打通 MCP 服务：内嵌 `http://127.0.0.1:8888/mcp`（交互式 Notebook Jupyter）。
 - 全程自动跳过人工 onboarding 步骤。
 

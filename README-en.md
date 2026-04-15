@@ -68,8 +68,6 @@ just status             # Check installation status
 
 ### Claude Code auto-registration
 
-- LSP plugins: `pyright`, `typescript`, `powershell`
-- Skills: `playwright`
 - MCP server: `http://127.0.0.1:8888/mcp` (Jupyter)
 - Skips onboarding
 
