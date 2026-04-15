@@ -7,8 +7,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
-$CoreDir = "$SCRIPT_DIR/../core"
+
 
 # 动态探测基础路径
 $InstallRoot = if (Test-Path "D:\") { "D:\DevEnvs" } else { "$env:USERPROFILE\DevEnvs" }
