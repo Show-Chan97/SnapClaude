@@ -1,4 +1,4 @@
-﻿# SnapClaude Windows 安装脚本
+# SnapClaude Windows 安装脚本
 # Usage: .\install.ps1 [all|git|node|python|vscode|claude]
 
 param(
