@@ -46,6 +46,14 @@ just install-all
 irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
+> **🛠️ Troubleshooting**: If the installation fails, you can enable debug logging:
+> ```powershell
+> # Download and run with the -DebugLog switch
+> irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
+> .\install.ps1 -DebugLog
+> ```
+
+
 ## Usage
 
 ```bash
