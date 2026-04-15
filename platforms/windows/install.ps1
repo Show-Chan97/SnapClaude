@@ -1,4 +1,4 @@
-# SnapClaude Windows 安装脚本
+﻿# SnapClaude Windows 瀹夎鑴氭湰
 # Usage: .\install.ps1 [all|git|node|python|vscode|claude]
 
 param(
@@ -9,11 +9,13 @@ param(
 $ErrorActionPreference = "Stop"
 
 
-# 动态探测基础路径
+# 鍔ㄦ€佹帰娴嬪熀纭€璺緞
 $InstallRoot = if (Test-Path "D:\") { "D:\DevEnvs" } else { "$env:USERPROFILE\DevEnvs" }
+# 纭繚璺緞涓嶄负绌?
+if ($null -eq $InstallRoot -or $InstallRoot -eq "") { $InstallRoot = "C:\DevEnvs" }
 if (-not (Test-Path $InstallRoot)) { New-Item -ItemType Directory -Path $InstallRoot -Force | Out-Null }
 
-# -------------------- 颜色 --------------------
+# -------------------- 棰滆壊 --------------------
 function Write-Step($msg) { Write-Host "[STEP] $msg" -ForegroundColor Cyan }
 function Write-Info($msg) { Write-Host "[INFO] $msg" -ForegroundColor Blue }
 function Write-Ok($msg)   { Write-Host "[OK]   $msg" -ForegroundColor Green }
@@ -23,11 +25,12 @@ function Write-Fail($msg) { Write-Host "[FAIL] $msg" -ForegroundColor Red }
 if ($DebugLog) {
     $LogPath = "$InstallRoot\install_debug.log"
     Start-Transcript -Path $LogPath -Append
-    Write-Info "调试模式已开启，详细安装日志将自动保存至: $LogPath"
+    Write-Info "璋冭瘯妯″紡宸插紑鍚紝璇︾粏瀹夎鏃ュ織灏嗚嚜鍔ㄤ繚瀛樿嚦: $LogPath"
 }
 
-# -------------------- 环境变量辅助 --------------------
+# -------------------- 鐜鍙橀噺杈呭姪 --------------------
 function Add-ToPath($dir) {
+    if ($null -eq $dir -or $dir -eq "") { return }
     if (-not (Test-Path $dir)) { return }
     $dir = $dir.TrimEnd('\')
     
@@ -46,7 +49,7 @@ function Add-ToPath($dir) {
     }
 }
 
-# -------------------- 检测 --------------------
+# -------------------- 妫€娴?--------------------
 function Get-Platform {
     $arch = $env:PROCESSOR_ARCHITECTURE
     if ($arch -eq "ARM64") { return "windows-arm64" }
@@ -61,13 +64,13 @@ function Get-Version($cmd) {
     } catch { "unknown" }
 }
 
-# -------------------- 下载 --------------------
+# -------------------- 涓嬭浇 --------------------
 $Mirror = "https://gh-proxy.com"
 $Mirror2 = "https://ghproxy.com"
 
 function Invoke-Download($url, $dest) {
     $tmp = "$dest.tmp"
-    Write-Info "下载 $([System.IO.Path]::GetFileName($dest))..."
+    Write-Info "涓嬭浇 $([System.IO.Path]::GetFileName($dest))..."
     
     $urls = @($url)
     if ($url -match "github\.com|githubusercontent\.com") {
@@ -83,21 +86,21 @@ function Invoke-Download($url, $dest) {
             Invoke-WebRequest -Uri $u -OutFile $tmp -UseBasicParsing
             $ProgressPreference = $oldProgress
             Move-Item $tmp $dest -Force
-            Write-Ok "下载完成 ($u)"
+            Write-Ok "涓嬭浇瀹屾垚 ($u)"
             return $true
         } catch {
-            Write-Warn "下载失败: $u"
+            Write-Warn "涓嬭浇澶辫触: $u"
             Remove-Item $tmp -Force -ErrorAction SilentlyContinue
         }
     }
     return $false
 }
 
-# -------------------- 安装 --------------------
+# -------------------- 瀹夎 --------------------
 function Install-Git {
-    Write-Step "安装 Git..."
+    Write-Step "瀹夎 Git..."
     if (Test-Command git) {
-        Write-Ok "Git 已安装: $(Get-Version git)"
+        Write-Ok "Git 宸插畨瑁? $(Get-Version git)"
         return
     }
 
@@ -111,7 +114,7 @@ function Install-Git {
         $installDir = "$InstallRoot\Git"
         if (!(Test-Path $installDir)) { New-Item -ItemType Directory -Path $installDir -Force | Out-Null }
         
-        Write-Info "正在提取 Git 到 $installDir ..."
+        Write-Info "姝ｅ湪鎻愬彇 Git 鍒?$installDir ..."
         Start-Process -FilePath $dest -ArgumentList "-y","-o`"$installDir`"" -WindowStyle Hidden -Wait
         
         $cmdDir = "$installDir\cmd"
@@ -120,16 +123,16 @@ function Install-Git {
         Add-ToPath $cmdDir
         Add-ToPath $binDir
 
-        Write-Ok "Git 已安装到 $installDir"
+        Write-Ok "Git 宸插畨瑁呭埌 $installDir"
     } else {
-        Write-Fail "Git 安装失败"
+        Write-Fail "Git 瀹夎澶辫触"
     }
 }
 
 function Install-Node {
-    Write-Step "安装 Node.js..."
+    Write-Step "瀹夎 Node.js..."
     if (Test-Command node) {
-        Write-Ok "Node.js 已安装: $(Get-Version node)"
+        Write-Ok "Node.js 宸插畨瑁? $(Get-Version node)"
         return
     }
 
@@ -148,14 +151,14 @@ function Install-Node {
             Add-ToPath $actualDir.FullName
         }
         Remove-Item $dest -Force -ErrorAction SilentlyContinue
-        Write-Ok "Node.js 已安装"
+        Write-Ok "Node.js 宸插畨瑁?
     }
 }
 
 function Install-Python {
-    Write-Step "安装 Python..."
+    Write-Step "瀹夎 Python..."
     if (Test-Command python) {
-        Write-Ok "Python 已安装: $(Get-Version python)"
+        Write-Ok "Python 宸插畨瑁? $(Get-Version python)"
         return
     }
 
@@ -170,7 +173,7 @@ function Install-Python {
         if (!(Test-Path $extractDir)) { New-Item -ItemType Directory -Path $extractDir -Force | Out-Null }
         Expand-Archive -Path $dest -DestinationPath $extractDir -Force
         
-        # 取消注释 _pth 文件中的 import site 以支持 pip
+        # 鍙栨秷娉ㄩ噴 _pth 鏂囦欢涓殑 import site 浠ユ敮鎸?pip
         $pthFile = Get-ChildItem $extractDir -Filter "*._pth" | Select-Object -First 1
         if ($pthFile) {
             $content = Get-Content $pthFile.FullName
@@ -178,27 +181,27 @@ function Install-Python {
             Set-Content $pthFile.FullName $content
         }
 
-        # 下载 pip
+        # 涓嬭浇 pip
         $pipUrl = "https://bootstrap.pypa.io/get-pip.py"
         Invoke-Download $pipUrl "$extractDir\get-pip.py" | Out-Null
         
-        # 执行安装 pip
+        # 鎵ц瀹夎 pip
         & "$extractDir\python.exe" "$extractDir\get-pip.py" "-i" "https://pypi.tuna.tsinghua.edu.cn/simple"
 
         Add-ToPath $extractDir
         Add-ToPath "$extractDir\Scripts"
 
         Remove-Item $dest -Force -ErrorAction SilentlyContinue
-        Write-Ok "Python 已安装"
+        Write-Ok "Python 宸插畨瑁?
     } else {
-        Write-Fail "Python 下载失败"
+        Write-Fail "Python 涓嬭浇澶辫触"
     }
 }
 
 function Install-VSCode {
-    Write-Step "安装 VSCode..."
+    Write-Step "瀹夎 VSCode..."
     if (Test-Command code) {
-        Write-Ok "VSCode 已安装: $(Get-Version code)"
+        Write-Ok "VSCode 宸插畨瑁? $(Get-Version code)"
         return
     }
 
@@ -214,35 +217,35 @@ function Install-VSCode {
         
         Add-ToPath "$extractDir\bin"
         
-        Write-Ok "VSCode 已安装到 $extractDir"
+        Write-Ok "VSCode 宸插畨瑁呭埌 $extractDir"
     }
 }
 
 function Install-Claude {
-    Write-Step "安装 Claude Code..."
+    Write-Step "瀹夎 Claude Code..."
 
-    # 先装依赖
+    # 鍏堣渚濊禆
     if (!(Test-Command git)) { Install-Git }
     if (!(Test-Command node)) { Install-Node }
 
     if (Test-Command claude) {
-        Write-Ok "Claude Code 已安装: $(Get-Version claude)"
+        Write-Ok "Claude Code 宸插畨瑁? $(Get-Version claude)"
         return
     }
 
     if (!(Test-Command npm)) {
-        Write-Fail "npm 未找到，Node.js 可能未正确配置"
+        Write-Fail "npm 鏈壘鍒帮紝Node.js 鍙兘鏈纭厤缃?
         return
     }
 
-    Write-Info "正在安装 @anthropic-ai/claude-code..."
+    Write-Info "姝ｅ湪瀹夎 @anthropic-ai/claude-code..."
     & "$env:SystemRoot\System32\cmd.exe" /c "npm install -g @anthropic-ai/claude-code"
     if ($LASTEXITCODE -ne 0) {
-        Write-Warn "安装失败，尝试通过国内 npm 镜像加速..."
+        Write-Warn "瀹夎澶辫触锛屽皾璇曢€氳繃鍥藉唴 npm 闀滃儚鍔犻€?.."
         & "$env:SystemRoot\System32\cmd.exe" /c "npm install -g @anthropic-ai/claude-code --registry=https://registry.npmmirror.com"
     }
 
-    # 尝试确保 global npm 目录存在于 PATH 变量
+    # 灏濊瘯纭繚 global npm 鐩綍瀛樺湪浜?PATH 鍙橀噺
     try {
         $npmPrefix = & "$env:SystemRoot\System32\cmd.exe" /c "npm config get prefix" | Out-String
         if ($npmPrefix) {
@@ -252,21 +255,21 @@ function Install-Claude {
     } catch {}
 
     if (Test-Command claude) {
-        Write-Ok "Claude Code 已安装: $(Get-Version claude)"
+        Write-Ok "Claude Code 宸插畨瑁? $(Get-Version claude)"
         Register-ClaudePlugins
     } else {
-        Write-Fail "Claude Code 安装失败"
+        Write-Fail "Claude Code 瀹夎澶辫触"
     }
 }
 
 function Register-ClaudePlugins {
-    Write-Step "注册 Claude Code 插件..."
+    Write-Step "娉ㄥ唽 Claude Code 鎻掍欢..."
 
     $oldErr = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
 
-    # 优先跳过 onboarding 工作流，防止第一次运行 claude CLI 被互动提示卡死失败
-    Write-Info "初始化 Claude Code 配置..."
+    # 浼樺厛璺宠繃 onboarding 宸ヤ綔娴侊紝闃叉绗竴娆¤繍琛?claude CLI 琚簰鍔ㄦ彁绀哄崱姝诲け璐?
+    Write-Info "鍒濆鍖?Claude Code 閰嶇疆..."
     $settingsDir = "$env:USERPROFILE\.claude"
     if (!(Test-Path $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
     $settingsFile = "$settingsDir\settings.json"
@@ -279,18 +282,18 @@ function Register-ClaudePlugins {
     } else {
         '{"hasCompletedOnboarding": true}' | Set-Content $settingsFile
     }
-    Write-Ok "Onboarding 已跳过"
+    Write-Ok "Onboarding 宸茶烦杩?
 
     # Jupyter MCP
-    Write-Info "注册 Jupyter MCP..."
+    Write-Info "娉ㄥ唽 Jupyter MCP..."
     claude mcp add jupyter "http://127.0.0.1:8888/mcp"
-    if ($LASTEXITCODE -eq 0) { Write-Ok "Jupyter MCP 已注册" } else { Write-Warn "Jupyter MCP 注册失败" }
+    if ($LASTEXITCODE -eq 0) { Write-Ok "Jupyter MCP 宸叉敞鍐? } else { Write-Warn "Jupyter MCP 娉ㄥ唽澶辫触" }
 
     $ErrorActionPreference = $oldErr
-    Write-Ok "插件注册完成"
+    Write-Ok "鎻掍欢娉ㄥ唽瀹屾垚"
 }
 
-# -------------------- 主 --------------------
+# -------------------- 涓?--------------------
 Write-Host ""
 Write-Host "  SnapClaude (Windows $(Get-Platform))" -ForegroundColor Green
 Write-Host "  ============================" -ForegroundColor Green
@@ -304,14 +307,14 @@ switch ($Target.ToLower()) {
     "vscode" { Install-VSCode }
     "claude" { Install-Claude }
     default  {
-        Write-Host "用法: .\install.ps1 [all|git|node|python|vscode|claude]"
+        Write-Host "鐢ㄦ硶: .\install.ps1 [all|git|node|python|vscode|claude]"
         Write-Host ""
-        Write-Host "  all     安装全部（默认）"
-        Write-Host "  git     仅安装 Git"
-        Write-Host "  node    仅安装 Node.js"
-        Write-Host "  python  仅安装 Python"
-        Write-Host "  vscode  仅安装 VSCode"
-        Write-Host "  claude  仅安装 Claude Code"
+        Write-Host "  all     瀹夎鍏ㄩ儴锛堥粯璁わ級"
+        Write-Host "  git     浠呭畨瑁?Git"
+        Write-Host "  node    浠呭畨瑁?Node.js"
+        Write-Host "  python  浠呭畨瑁?Python"
+        Write-Host "  vscode  浠呭畨瑁?VSCode"
+        Write-Host "  claude  浠呭畨瑁?Claude Code"
     }
 }
 
