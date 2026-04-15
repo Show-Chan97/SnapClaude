@@ -52,6 +52,14 @@ just install-all
 irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
+> **🛠️ 调试与排错**：如果安装遇到问题，可以开启调试日志模式：
+> ```powershell
+> # 下载脚本并带参数运行
+> irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
+> .\install.ps1 -DebugLog
+> ```
+
+
 > **💡 温馨提示：默认安装路径**
 > 系统会自动为您在 `D:\DevEnvs` 构建纯净的独立环境目录；如果您没有 D 盘，系统会智能降级放置在您的 `C:\Users\用户名\DevEnvs` 目录下，绝不污染系统原有的 `Program Files` 目录！
 
