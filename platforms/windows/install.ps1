@@ -286,7 +286,7 @@ function Register-ClaudePlugins {
 
     # Jupyter MCP
     Write-Info "注册 Jupyter MCP..."
-    claude mcp add jupyter "http://127.0.0.1:8888/mcp"
+    claude mcp add jupyter "http://127.0.0.1:8888/mcp" --transport sse
     if ($LASTEXITCODE -eq 0) { Write-Ok "Jupyter MCP 已注册" } else { Write-Warn "Jupyter MCP 注册失败" }
 
     $ErrorActionPreference = $oldErr
