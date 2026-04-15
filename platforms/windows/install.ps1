@@ -88,6 +88,7 @@ function Invoke-Download($url, $dest) {
             return $true
         } catch {
             Write-Warn "下载失败: $u"
+            Remove-Item $tmp -Force -ErrorAction SilentlyContinue
         }
     }
     return $false

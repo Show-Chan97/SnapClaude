@@ -49,10 +49,10 @@ main() {
 
     # 如果是 git 仓库，使用 sparse checkout
     if [ -d "${SCRIPT_DIR}/.git" ] && [ "$SCRIPT_DIR" != "$HOME" ]; then
-        info "配置 Git Sparse Checkout..."
+        info "配置 Git Sparse Checkout (若 Git < 2.25 将静默降级为全量代码)..."
         git sparse-checkout init --cone 2>/dev/null || true
         git sparse-checkout set "platforms/${TARGET_PLATFORM}" "install.sh" "README.md" 2>/dev/null || true
-        ok "已切换到 ${TARGET_PLATFORM} 平台"
+        ok "本地仓库代码目录已优化"
     fi
 
     # 执行对应平台的安装

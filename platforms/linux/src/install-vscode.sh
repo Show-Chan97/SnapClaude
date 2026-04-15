@@ -7,6 +7,13 @@ source "${SCRIPT_DIR}/core/common.sh"
 
 step "安装 VSCode..."
 
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+    warn "检测到 WSL 环境！"
+    info "在 WSL 中不建议直接用 apt 安装 Linux 版 VSCode。"
+    info "请在 Windows 宿主机安装 VSCode，并配合 'Remote - WSL' 插件使用。"
+    exit 0
+fi
+
 if is_installed code; then
     ver=$(code --version 2>/dev/null | head -1)
     ok "VSCode 已安装 (v$ver)"
