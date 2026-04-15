@@ -50,7 +50,8 @@ irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/wind
 
 ```powershell
 # 1. Download script
-irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1 -Encoding UTF8
+$c = irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1
+$c | Out-File install.ps1 -Encoding UTF8
 
 # 2. Unlock execution policy (applies to this session only)
 Set-ExecutionPolicy Bypass -Scope Process -Force
