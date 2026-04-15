@@ -52,17 +52,18 @@ just install-all
 irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
-> **🛠️ 调试与排错**：如果安装遇到问题，可以开启调试日志模式：
-> ```powershell
-> # 1. 下载脚本
-> irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
-> 
-> # 2. 解锁执行策略 (仅对当前窗口有效)
-> Set-ExecutionPolicy Bypass -Scope Process -Force
-> 
-> # 3. 运行调试
-> .\install.ps1 -DebugLog
-> ```
+**🛠️ 调试与排错**：如果安装遇到问题，可以开启调试日志模式：
+
+```powershell
+# 1. 下载脚本
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
+
+# 2. 解锁执行策略 (仅对当前窗口有效)
+Set-ExecutionPolicy Bypass -Scope Process -Force
+
+# 3. 运行调试
+.\install.ps1 -DebugLog
+```
 
 
 > **💡 温馨提示：默认安装路径**

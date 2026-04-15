@@ -46,17 +46,18 @@ just install-all
 irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 | iex
 ```
 
-> **🛠️ Troubleshooting**: If the installation fails, you can enable debug logging:
-> ```powershell
-> # 1. Download script
-> irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
-> 
-> # 2. Unlock execution policy (applies to this session only)
-> Set-ExecutionPolicy Bypass -Scope Process -Force
-> 
-> # 3. Run with debug logging
-> .\install.ps1 -DebugLog
-> ```
+**🛠️ Troubleshooting**: If the installation fails, you can enable debug logging:
+
+```powershell
+# 1. Download script
+irm https://raw.githubusercontent.com/Show-Chan97/SnapClaude/main/platforms/windows/install.ps1 -OutFile install.ps1
+
+# 2. Unlock execution policy (applies to this session only)
+Set-ExecutionPolicy Bypass -Scope Process -Force
+
+# 3. Run with debug logging
+.\install.ps1 -DebugLog
+```
 
 
 ## Usage
