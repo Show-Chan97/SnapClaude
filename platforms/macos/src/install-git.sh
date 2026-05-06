@@ -4,6 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 source "${SCRIPT_DIR}/core/detect.sh"
 source "${SCRIPT_DIR}/core/common.sh"
+source "${SCRIPT_DIR}/platforms/macos/src/brew.sh"
 
 step "安装 Git..."
 
@@ -13,10 +14,7 @@ if is_installed git; then
     exit 0
 fi
 
-if ! command -v brew &> /dev/null; then
-    fail "Homebrew 未安装，请先安装 Homebrew: https://brew.sh"
-    exit 1
-fi
+ensure_homebrew
 
 brew install git
 ok "Git 安装完成: $(git --version)"

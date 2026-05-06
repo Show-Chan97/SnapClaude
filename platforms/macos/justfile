@@ -52,4 +52,4 @@ status:
 
 update:
     #!/usr/bin/env bash
-    bash src/update.sh
+    bash ../../core/update.sh

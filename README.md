@@ -15,9 +15,10 @@
 
 ## 📦 依赖环境
 
-- **macOS / Linux**: 预装 [just](https://github.com/casey/just) >= 1.20
+- **macOS / Linux**: 预装 `bash` / `curl` / `tar`（系统通常自带）
 - **Windows**: PowerShell 5.0+
-- **macOS 额外推荐**: 预装 [Homebrew](https://brew.sh)
+- **macOS**: Homebrew 会在缺失时自动安装；若已预装则直接复用
+- **可选**: [just](https://github.com/casey/just) >= 1.20（未安装时脚本会自动降级为 bash 执行）
 - **Git 版本推荐**: `>= 2.25`（低版本不支持 Sparse Checkout 机制，会自动静默降级为全量代码同步）
 - **WSL 提示**: 脚本已内置 WSL 环境查杀，如果侦测到环境为 WSL，会自动跳过子系统内 VSCode 的安装。推荐在宿主机 (Windows) 安装 VSCode 并配合 `Remote - WSL` 插件连接使用。
 

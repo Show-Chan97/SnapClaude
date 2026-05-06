@@ -4,6 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 source "${SCRIPT_DIR}/core/detect.sh"
 source "${SCRIPT_DIR}/core/common.sh"
+source "${SCRIPT_DIR}/platforms/macos/src/brew.sh"
 
 step "安装 Node.js..."
 
@@ -13,10 +14,7 @@ if is_installed node; then
     exit 0
 fi
 
-if ! command -v brew &> /dev/null; then
-    fail "Homebrew 未安装"
-    exit 1
-fi
+ensure_homebrew
 
 brew install node
 ok "Node.js 安装完成: $(node --version)"

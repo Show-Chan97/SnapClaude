@@ -40,5 +40,5 @@ check "VSCode"      detect_vscode
 check "Claude Code" detect_claude
 
 echo ""
-echo "  运行 ${GREEN}just install-all${NC} 安装全部"
+echo -e "  运行 ${GREEN}just install-all${NC} 安装全部"
 echo ""
